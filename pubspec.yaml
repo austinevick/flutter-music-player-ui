@@ -28,6 +28,9 @@ dependencies:
   flutter_audio_query:
   audioplayers:  
   animations:
+  seekbar: 
+  flutter_custom_clippers:  
+
 
 
 dev_dependencies:

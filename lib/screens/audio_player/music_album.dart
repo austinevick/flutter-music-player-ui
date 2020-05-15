@@ -5,7 +5,7 @@ class AlbumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(child: Center(child: Text('display album'),),),
+      body: Container(child: Center(child: Text('Artist album'),),),
       
     bottomNavigationBar: buildBottomApp(function: (){},onPressed: (){}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

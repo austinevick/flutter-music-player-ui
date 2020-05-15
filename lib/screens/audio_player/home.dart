@@ -1,10 +1,12 @@
 import 'package:animations/animations.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:music_app/screens/download_page.dart';
-import 'package:music_app/screens/now_playing_screen.dart';
+import 'package:music_app/models/artist_model.dart';
+import 'package:music_app/screens/audio_player/artist_album.dart';
+import 'package:music_app/screens/audio_player/current_song_screen.dart';
 import 'package:music_app/screens/widget.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+
+import 'download_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,9 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List songs = [];
-  AudioPlayer audioPlayer = AudioPlayer();
-
+  ArtistModel artistModel = ArtistModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +71,8 @@ class _HomePageState extends State<HomePage> {
                 title: 'Playlist',
                 subtitle: '24 Songs'),
             buildMusicLibrary(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ArtistAlbumScreen())),
                 icon: Container(
                   height: 50,
                   width: 40,
@@ -84,56 +86,58 @@ class _HomePageState extends State<HomePage> {
                 subtitle: '10 Songs'),
           ],
         )),
-        OpenContainer(closedElevation: 0,
-        transitionType: ContainerTransitionType.fade,
-        openColor: Colors.purple,
-        transitionDuration: const Duration(milliseconds: 3000),
-          closedBuilder: (context, openContainer) {
-          return GestureDetector(
-            onTap:openContainer,
-            child: Container(
-              height: 150,
-              decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title: Text('Now playing',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold)),
-                      trailing: CircularPercentIndicator(
-                        radius: 50,
-                        progressColor: Colors.white,
-                        center: IconButton(
-                            icon: Icon(Icons.play_arrow), onPressed: () {}),
+        OpenContainer(
+            closedElevation: 0,
+            transitionType: ContainerTransitionType.fade,
+            openColor: Colors.purple,
+            transitionDuration: const Duration(milliseconds: 2000),
+            closedBuilder: (context, openContainer) {
+              return GestureDetector(
+                onTap: openContainer,
+                child: Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Text('Now playing',
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold)),
+                          trailing: CircularPercentIndicator(
+                            radius: 50,
+                            progressColor: Colors.white,
+                            center: IconButton(
+                                icon: Icon(Icons.play_arrow), onPressed: () {}),
+                          ),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage('image/frank.jpg')),
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.blue,
+                              )),
+                          subtitle: Text('Frank Edwards',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w800)),
+                        ),
                       ),
-                      leading: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage('image/car1.jpeg')),
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.blue,
-                          )),
-                      subtitle: Text('Frank Edwards',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w800)),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          );
-        }, openBuilder: (context, _) {
-          return NowPlayingScreen();
-        })
+                ),
+              );
+            },
+            openBuilder: (context, _) {
+              return CurrentSongScreen();
+            })
       ]),
       bottomNavigationBar: buildBottomApp(function: () {}, onPressed: () {}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
